@@ -1,10 +1,10 @@
-
 'use client';
 
 import {useEffect, useState} from 'react';
 import { firebaseConfig } from './config';
 
 import {FirebaseProvider, type FirebaseProviderProps} from './provider';
+import { LoaderCircle } from 'lucide-react';
 
 /**
  * A client-side component that initializes Firebase and provides it to its children.
@@ -15,7 +15,6 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
   const [firebase, setFirebase] = useState<FirebaseProviderProps | null>(null);
 
   useEffect(() => {
-    // Check if all necessary Firebase config keys are present and not placeholders
     const isFirebaseConfigured = 
       firebaseConfig.apiKey &&
       !firebaseConfig.apiKey.startsWith('YOUR_') &&
@@ -23,17 +22,24 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
       firebaseConfig.projectId;
 
     if (isFirebaseConfigured) {
-      // Dynamically import initializeFirebase to ensure it's only run on the client.
       import('.').then(({initializeFirebase}) => {
         setFirebase(initializeFirebase());
       });
     } else {
       console.warn("Firebase configuration is missing or contains placeholder values. Please update your .env file with your project's credentials. Firebase will not be initialized.");
-      // Set an empty object to signal that initialization is "done" but failed.
       setFirebase({} as FirebaseProviderProps); 
     }
   }, []);
   
+  // While firebase is initializing, show a loading indicator
+  if (!firebase) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <LoaderCircle className="animate-spin text-primary" size={48} />
+      </div>
+    );
+  }
+
   return (
     <FirebaseProvider 
       firebaseApp={firebase?.firebaseApp}

@@ -1,11 +1,9 @@
 'use client';
 
-import { Link } from '@/navigation';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
-  ArrowLeft, 
   QrCode, 
   ArrowRightLeft, 
   ChevronDown,
@@ -22,6 +20,7 @@ import { useDoc } from '@/firebase/firestore/use-doc';
 import { signOut } from 'firebase/auth';
 import { useRouter } from '@/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useEffect } from 'react';
 
 const chartData = [
   { name: 'Jan', value: 20 }, { name: 'Fev', value: 45 }, { name: 'Mar', value: 30 },
@@ -47,7 +46,8 @@ function AssetRow({ icon, name, shortName, amount, value }: { icon: React.ReactN
         <p className="font-semibold">{amount}</p>
         <p className="text-sm text-muted-foreground">${value.toLocaleString(t('locale'))}</p>
       </div>
-    )
+    </div>
+  )
 }
 
 function DashboardContent() {
@@ -174,29 +174,14 @@ export default function DashboardPage() {
   const { user, loading } = useUser();
   const router = useRouter();
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-screen bg-black">
-        <div className="w-full max-w-4xl mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white p-8">
-          <Skeleton className="h-8 w-1/4 mb-6" />
-          <Skeleton className="h-12 w-1/2 mb-8" />
-          <div className="flex gap-4 mb-8">
-            <Skeleton className="h-10 flex-1" />
-            <Skeleton className="h-10 flex-1" />
-            <Skeleton className="h-10 w-10" />
-          </div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <Skeleton className="h-48" />
-            <Skeleton className="h-64" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (!user) {
-    router.replace('/login');
-    return null;
+  useEffect(() => {
+    if (!loading && !user) {
+      router.replace('/login');
+    }
+  }, [user, loading, router]);
+  
+  if (loading || !user) {
+    return null; // The loading is handled by the FirebaseClientProvider
   }
   
   return (

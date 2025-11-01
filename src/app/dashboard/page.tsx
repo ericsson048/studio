@@ -4,9 +4,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ArrowLeft, User, QrCode, ArrowRightLeft, Settings, Bell, ChevronDown } from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from 'recharts';
-import { Badge } from '@/components/ui/badge';
+import { 
+  ArrowLeft, 
+  QrCode, 
+  ArrowRightLeft, 
+  ChevronDown,
+  Bitcoin,
+  CircleDollarSign,
+  Droplets
+} from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 
 const chartData = [
   { name: 'Jan', value: 20 }, { name: 'Fev', value: 45 }, { name: 'Mar', value: 30 },
@@ -17,9 +24,9 @@ const chartData = [
 
 function AssetRow({ icon, name, shortName, amount, value }: { icon: React.ReactNode, name: string, shortName: string, amount: number, value: number }) {
   return (
-    <div className="flex items-center justify-between py-3">
+    <div className="flex items-center justify-between py-4">
       <div className="flex items-center gap-4">
-        <div className="bg-gray-800 rounded-full p-2">
+        <div className="bg-secondary rounded-full p-3">
           {icon}
         </div>
         <div>
@@ -38,9 +45,9 @@ function AssetRow({ icon, name, shortName, amount, value }: { icon: React.ReactN
 export default function DashboardPage() {
   return (
     <div className="flex justify-center items-center min-h-screen bg-black">
-      <div className="w-full max-w-sm mx-auto bg-[#1C1C1E] rounded-3xl shadow-lg text-white font-sans overflow-hidden">
-        <div className="p-4">
-          <header className="flex justify-between items-center mb-4">
+      <div className="w-full max-w-sm mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white font-sans overflow-hidden">
+        <div className="p-6">
+          <header className="flex justify-between items-center mb-6">
             <Link href="/login">
               <Button variant="ghost" size="icon"><ArrowLeft /></Button>
             </Link>
@@ -53,50 +60,58 @@ export default function DashboardPage() {
           </header>
 
           <main>
-            <div className="text-left mb-6">
-              <p className="text-sm text-muted-foreground">Your Wallet</p>
-              <h1 className="text-4xl font-bold">40,278.00 <span className="text-2xl text-muted-foreground">USDT</span></h1>
+            <div className="text-left mb-8">
+              <p className="text-sm text-muted-foreground">Votre portefeuille</p>
+              <h1 className="text-4xl font-bold">40,278.00 <span className="text-2xl text-muted-foreground align-middle">USDT</span></h1>
             </div>
 
-            <div className="flex justify-around gap-2 mb-6">
-              <Button className="flex-1 bg-white text-black hover:bg-gray-200">Withdraw</Button>
-              <Button variant="secondary" className="flex-1">Deposit</Button>
+            <div className="flex justify-around gap-4 mb-8">
+              <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">Retirer</Button>
+              <Button variant="secondary" className="flex-1">Déposer</Button>
               <Button variant="secondary" size="icon"><ArrowRightLeft className="h-4 w-4" /></Button>
             </div>
             
-            <Card className="bg-transparent border-none">
-              <CardHeader className="flex flex-row items-center justify-between p-0 mb-2">
-                <CardTitle className="text-lg">Staking & tokens</CardTitle>
-                <Button variant="link" className="text-white">See all</Button>
+            <Card className="bg-transparent border-none p-0">
+              <CardHeader className="flex flex-row items-center justify-between p-0 mb-4">
+                <CardTitle className="text-lg">Jalonnement & jetons</CardTitle>
+                <Button variant="link" className="text-primary pr-0">Voir tout</Button>
               </CardHeader>
               <CardContent className="p-0">
-                <div className="h-24">
+                <div className="h-32 -ml-4">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
                       <XAxis dataKey="name" hide />
                       <YAxis hide domain={[0, 'dataMax + 10']}/>
-                      <Bar dataKey="value" fill="#8884d8" radius={[4, 4, 0, 0]} barSize={5} />
+                      <Tooltip 
+                        cursor={{fill: 'hsla(var(--primary), 0.1)'}}
+                        contentStyle={{
+                          background: 'hsl(var(--background))',
+                          borderColor: 'hsl(var(--border))',
+                          borderRadius: 'var(--radius)'
+                        }}
+                      />
+                      <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={8} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
-                 <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                  <span>Tokens <span className="text-white">$32.7k</span></span>
-                  <span>Staking Tokens <span className="text-white">$52.7k</span></span>
+                 <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                  <span>Jetons <span className="text-white font-medium">$32.7k</span></span>
+                  <span>Jalonnement <span className="text-white font-medium">$52.7k</span></span>
                 </div>
               </CardContent>
             </Card>
 
-            <div className="mt-6">
+            <div className="mt-8">
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold">Assets</h2>
-                <Button variant="ghost" size="sm">Buy <ChevronDown className="w-4 h-4 ml-1" /></Button>
+                <h2 className="text-lg font-semibold">Actifs</h2>
+                <Button variant="ghost" size="sm">Acheter <ChevronDown className="w-4 h-4 ml-1" /></Button>
               </div>
-              <div className="divide-y divide-gray-800">
-                <AssetRow icon={<span className="text-xl">✳️</span>} name="ADA" shortName="Cardano" amount={67.5} value={2760.75} />
-                <AssetRow icon={<span className="text-xl">🌀</span>} name="HEX" shortName="Hex Token" amount={7.8} value={4053} />
-                <AssetRow icon={<span className="text-xl">🌐</span>} name="Ocean" shortName="Protocol" amount={3.9} value={2198} />
+              <div className="divide-y divide-border">
+                <AssetRow icon={<Bitcoin className="text-primary" />} name="ADA" shortName="Cardano" amount={67.5} value={2760.75} />
+                <AssetRow icon={<CircleDollarSign className="text-primary" />} name="HEX" shortName="Hex Token" amount={7.8} value={4053} />
+                <AssetRow icon={<Droplets className="text-primary" />} name="Ocean" shortName="Protocol" amount={3.9} value={2198} />
               </div>
-              <Button variant="ghost" className="w-full mt-4 text-muted-foreground">+ 12 Tokens</Button>
+              <Button variant="ghost" className="w-full mt-2 text-muted-foreground hover:text-white">+ 12 jetons</Button>
             </div>
           </main>
         </div>

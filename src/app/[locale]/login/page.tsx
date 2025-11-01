@@ -1,6 +1,6 @@
 'use client';
 
-import { Link, useRouter } from '@/navigation';
+import { useRouter } from '@/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet } from 'lucide-react';
@@ -11,6 +11,7 @@ import { signInAnonymously } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { Link } from '@/navigation';
 
 const defaultUserData = {
   balance: 40278.00,
@@ -44,7 +45,7 @@ export default function LoginPage() {
     if (!auth || !firestore) {
         toast({
             title: "Firebase Not Initialized",
-            description: "Please check your Firebase configuration.",
+            description: "Please check your Firebase configuration or wait a moment.",
             variant: "destructive",
         });
         return;
@@ -82,7 +83,6 @@ export default function LoginPage() {
   };
 
   if (userLoading || user) {
-    // The loading is handled by FirebaseClientProvider, and redirect is handled by useEffect
     return null;
   }
 
@@ -113,7 +113,7 @@ export default function LoginPage() {
                 onClick={handleConnect}
                 disabled={loading || !auth}
               >
-                {loading || !auth ? 'Connecting...' : t('connectButton')}
+                {loading ? 'Connecting...' : t('connectButton')}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 {t('terms')}

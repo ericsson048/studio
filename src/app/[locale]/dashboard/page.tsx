@@ -61,6 +61,7 @@ function DashboardContent() {
   const { data: userProfile, loading: profileLoading } = useDoc(userDocRef);
 
   const handleSignOut = async () => {
+    if (!auth) return;
     try {
       await signOut(auth);
       router.push('/login');
@@ -181,7 +182,7 @@ export default function DashboardPage() {
   }, [user, loading, router]);
   
   if (loading || !user) {
-    return null; // The loading is handled by the FirebaseClientProvider
+    return null;
   }
   
   return (

@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   ArrowLeft, 
   QrCode, 
@@ -44,8 +44,8 @@ function AssetRow({ icon, name, shortName, amount, value }: { icon: React.ReactN
 
 export default function DashboardPage() {
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black">
-      <div className="w-full max-w-sm mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white font-sans overflow-hidden">
+    <div className="flex justify-center items-start md:items-center min-h-screen bg-black py-4 md:py-0">
+      <div className="w-full max-w-4xl mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white font-sans overflow-hidden">
         <div className="p-6">
           <header className="flex justify-between items-center mb-6">
             <Link href="/login">
@@ -65,53 +65,55 @@ export default function DashboardPage() {
               <h1 className="text-4xl font-bold">40,278.00 <span className="text-2xl text-muted-foreground align-middle">USDT</span></h1>
             </div>
 
-            <div className="flex justify-around gap-4 mb-8">
+            <div className="flex flex-col md:flex-row justify-start gap-4 mb-8">
               <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">Retirer</Button>
               <Button variant="secondary" className="flex-1">Déposer</Button>
               <Button variant="secondary" size="icon"><ArrowRightLeft className="h-4 w-4" /></Button>
             </div>
             
-            <Card className="bg-transparent border-none p-0">
-              <CardHeader className="flex flex-row items-center justify-between p-0 mb-4">
-                <CardTitle className="text-lg">Jalonnement & jetons</CardTitle>
-                <Button variant="link" className="text-primary pr-0">Voir tout</Button>
-              </CardHeader>
-              <CardContent className="p-0">
-                <div className="h-32 -ml-4">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <BarChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
-                      <XAxis dataKey="name" hide />
-                      <YAxis hide domain={[0, 'dataMax + 10']}/>
-                      <Tooltip 
-                        cursor={{fill: 'hsla(var(--primary), 0.1)'}}
-                        contentStyle={{
-                          background: 'hsl(var(--background))',
-                          borderColor: 'hsl(var(--border))',
-                          borderRadius: 'var(--radius)'
-                        }}
-                      />
-                      <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={8} />
-                    </BarChart>
-                  </ResponsiveContainer>
-                </div>
-                 <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                  <span>Jetons <span className="text-white font-medium">$32.7k</span></span>
-                  <span>Jalonnement <span className="text-white font-medium">$52.7k</span></span>
-                </div>
-              </CardContent>
-            </Card>
+            <div className="grid md:grid-cols-2 gap-8">
+              <Card className="bg-transparent border-none p-0">
+                <CardHeader className="flex flex-row items-center justify-between p-0 mb-4">
+                  <CardTitle className="text-lg">Jalonnement & jetons</CardTitle>
+                  <Button variant="link" className="text-primary pr-0">Voir tout</Button>
+                </CardHeader>
+                <CardContent className="p-0">
+                  <div className="h-32 -ml-4">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <BarChart data={chartData} margin={{ top: 5, right: 0, left: 0, bottom: 5 }}>
+                        <XAxis dataKey="name" hide />
+                        <YAxis hide domain={[0, 'dataMax + 10']}/>
+                        <Tooltip 
+                          cursor={{fill: 'hsla(var(--primary), 0.1)'}}
+                          contentStyle={{
+                            background: 'hsl(var(--background))',
+                            borderColor: 'hsl(var(--border))',
+                            borderRadius: 'var(--radius)'
+                          }}
+                        />
+                        <Bar dataKey="value" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} barSize={8} />
+                      </BarChart>
+                    </ResponsiveContainer>
+                  </div>
+                   <div className="flex justify-between text-xs text-muted-foreground mt-2">
+                    <span>Jetons <span className="text-white font-medium">$32.7k</span></span>
+                    <span>Jalonnement <span className="text-white font-medium">$52.7k</span></span>
+                  </div>
+                </CardContent>
+              </Card>
 
-            <div className="mt-8">
-              <div className="flex justify-between items-center mb-2">
-                <h2 className="text-lg font-semibold">Actifs</h2>
-                <Button variant="ghost" size="sm">Acheter <ChevronDown className="w-4 h-4 ml-1" /></Button>
+              <div className="mt-8 md:mt-0">
+                <div className="flex justify-between items-center mb-2">
+                  <h2 className="text-lg font-semibold">Actifs</h2>
+                  <Button variant="ghost" size="sm">Acheter <ChevronDown className="w-4 h-4 ml-1" /></Button>
+                </div>
+                <div className="divide-y divide-border">
+                  <AssetRow icon={<Bitcoin className="text-primary" />} name="ADA" shortName="Cardano" amount={67.5} value={2760.75} />
+                  <AssetRow icon={<CircleDollarSign className="text-primary" />} name="HEX" shortName="Hex Token" amount={7.8} value={4053} />
+                  <AssetRow icon={<Droplets className="text-primary" />} name="Ocean" shortName="Protocol" amount={3.9} value={2198} />
+                </div>
+                <Button variant="ghost" className="w-full mt-2 text-muted-foreground hover:text-white">+ 12 jetons</Button>
               </div>
-              <div className="divide-y divide-border">
-                <AssetRow icon={<Bitcoin className="text-primary" />} name="ADA" shortName="Cardano" amount={67.5} value={2760.75} />
-                <AssetRow icon={<CircleDollarSign className="text-primary" />} name="HEX" shortName="Hex Token" amount={7.8} value={4053} />
-                <AssetRow icon={<Droplets className="text-primary" />} name="Ocean" shortName="Protocol" amount={3.9} value={2198} />
-              </div>
-              <Button variant="ghost" className="w-full mt-2 text-muted-foreground hover:text-white">+ 12 jetons</Button>
             </div>
           </main>
         </div>

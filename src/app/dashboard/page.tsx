@@ -44,9 +44,9 @@ function AssetRow({ icon, name, shortName, amount, value }: { icon: React.ReactN
 
 export default function DashboardPage() {
   return (
-    <div className="flex justify-center items-start md:items-center min-h-screen bg-black py-4 md:py-0">
+    <div className="flex justify-center items-start md:items-center min-h-screen bg-black py-8 px-4 md:py-0 md:px-0">
       <div className="w-full max-w-4xl mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white font-sans overflow-hidden">
-        <div className="p-6">
+        <div className="p-6 md:p-8">
           <header className="flex justify-between items-center mb-6">
             <Link href="/login">
               <Button variant="ghost" size="icon"><ArrowLeft /></Button>

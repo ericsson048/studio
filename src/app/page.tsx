@@ -12,27 +12,27 @@ export default function Home() {
         </Link>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
           <Link
-            className="text-sm font-medium text-muted-foreground hover:text-primary"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             href="#"
           >
             Features
           </Link>
           <Link
-            className="text-sm font-medium text-muted-foreground hover:text-primary"
+            className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             href="#"
           >
             Support
           </Link>
           <Link href="/login">
-            <Button variant="outline" className="hover:bg-secondary">
+            <Button variant="outline">
               Connect Wallet
             </Button>
           </Link>
         </nav>
       </header>
-      <main className="flex-1 flex items-center justify-center">
-        <div className="text-center space-y-6 px-4">
-          <h1 className="text-5xl font-bold tracking-tighter sm:text-6xl md:text-7xl">
+      <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-6 max-w-3xl">
+          <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
             Privacy-Preserving Recurring Payments
           </h1>
           <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">

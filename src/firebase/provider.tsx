@@ -64,20 +64,19 @@ export function useFirebase() {
  * A hook that returns the Firebase App instance.
  */
 export function useFirebaseApp() {
-  return useFirebase()?.firebaseApp;
+  return useContext(FirebaseContext)?.firebaseApp;
 }
 
 /**
  * A hook that returns the Firebase Firestore instance.
  */
 export function useFirestore() {
-  return useFirebase()?.firestore;
+  return useContext(FirebaseContext)?.firestore;
 }
 
 /**
  * A hook that returns the Firebase Auth instance.
  */
 export function useAuth() {
-  return useFirebase()?.auth;
+  return useContext(FirebaseContext)?.auth;
 }
-

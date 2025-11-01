@@ -29,11 +29,11 @@ export function FirebaseProvider({
   firestore,
   auth,
   children,
-}: FirebaseProviderProps) {
+}: Partial<FirebaseProviderProps>) {
   const value = firebaseApp ? { firebaseApp, firestore, auth } : null;
 
   return (
-    <FirebaseContext.Provider value={value}>
+    <FirebaseContext.Provider value={value as any}>
       {children}
     </FirebaseContext.Provider>
   );

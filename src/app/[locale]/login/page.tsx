@@ -88,7 +88,22 @@ export default function LoginPage() {
                 </nav>
             </header>
             <main className="flex-1 flex items-center justify-center p-4">
-                <Skeleton className="w-full max-w-sm h-72" />
+              <Card className="w-full max-w-sm border-border">
+                <CardHeader className="text-center">
+                  <CardTitle className="text-2xl">{t('title')}</CardTitle>
+                  <CardDescription>
+                    {t('description')}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <Skeleton className="w-full h-10" />
+                    <p className="text-center text-xs text-muted-foreground">
+                      {t('terms')}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
             </main>
             <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-border">
                 <Skeleton className="h-4 w-64" />

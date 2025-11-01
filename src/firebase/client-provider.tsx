@@ -29,35 +29,18 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
       });
     } else {
       console.warn("Firebase configuration is missing or contains placeholder values. Please update your .env file with your project's credentials. Firebase will not be initialized.");
-      // Set a marker to indicate config is invalid, so children can render without waiting.
+      // Set an empty object to signal that initialization is "done" but failed.
       setFirebase({} as FirebaseProviderProps); 
     }
   }, []);
-
-  if (!firebase) {
-    // While Firebase is initializing, we can return null or a loading spinner.
-    // However, to avoid a flash of missing content, we'll let child pages handle their own loading state.
-    // We will render the children, but the context will be null, so hooks will fail if not handled correctly.
-    // The fix is to render the provider with a null context, and have consumers check the context.
-    return <FirebaseProvider
-      firebaseApp={null as any}
-      firestore={null as any}
-      auth={null as any}
-    >
-      {children}
-    </FirebaseProvider>
-  }
   
-  if (!firebase.firebaseApp) {
-     return <FirebaseProvider
-      firebaseApp={null as any}
-      firestore={null as any}
-      auth={null as any}
+  return (
+    <FirebaseProvider 
+      firebaseApp={firebase?.firebaseApp}
+      firestore={firebase?.firestore}
+      auth={firebase?.auth}
     >
       {children}
     </FirebaseProvider>
-  }
-
-  return <FirebaseProvider {...firebase}>{children}</FirebaseProvider>;
+  );
 }
-

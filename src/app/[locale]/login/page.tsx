@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from '/navigation';
+import { useRouter } from '@/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet } from 'lucide-react';
@@ -11,7 +11,7 @@ import { signInAnonymously } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { Link } from '/navigation';
+import { Link } from '@/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const defaultUserData = {
@@ -83,49 +83,10 @@ export default function LoginPage() {
     }
   };
 
-  const isLoading = userLoading || !auth;
+  const isLoading = userLoading || user;
 
-  if (isLoading || user) {
-     return (
-      <div className="flex flex-col min-h-screen bg-background">
-        <header className="px-4 lg:px-6 h-14 flex items-center border-b border-border">
-          <Link className="flex items-center justify-center" href="/">
-            <Wallet className="h-6 w-6 text-primary" />
-            <span className="ml-2 text-lg font-semibold">{t('header')}</span>
-          </Link>
-          <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
-             <Skeleton className="h-6 w-16" />
-             <Skeleton className="h-10 w-24" />
-          </nav>
-        </header>
-        <main className="flex-1 flex items-center justify-center p-4">
-          <Card className="w-full max-w-sm border-border">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">{t('title')}</CardTitle>
-              <CardDescription>
-                {t('description')}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <Button
-                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-                  disabled={true}
-                >
-                  {t('connectButton')}
-                </Button>
-                <p className="text-center text-xs text-muted-foreground">
-                  {t('terms')}
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </main>
-        <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-border">
-           <Skeleton className="h-4 w-48" />
-        </footer>
-      </div>
-    );
+  if (isLoading) {
+     return null;
   }
 
 

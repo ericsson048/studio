@@ -2,7 +2,7 @@ import { ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
-import { Link } from '/navigation';
+import { Link } from '@/navigation';
 
 export default function Home() {
   const t = useTranslations('Home');

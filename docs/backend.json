@@ -2,7 +2,7 @@
   "entities": {
     "UserProfile": {
       "title": "User Profile",
-      "description": "Represents a user's profile information.",
+      "description": "Represents a user's profile information, including their wallet data.",
       "type": "object",
       "properties": {
         "displayName": {
@@ -18,11 +18,47 @@
           "type": "string",
           "format": "uri",
           "description": "URL of the user's profile picture."
+        },
+        "balance": {
+          "type": "number",
+          "description": "The user's total wallet balance in USDT."
+        },
+        "assets": {
+          "type": "array",
+          "description": "A list of the user's crypto assets.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "icon": {
+                "type": "string",
+                "description": "The lucide-react icon name for the asset."
+              },
+              "name": {
+                "type": "string",
+                "description": "The asset's ticker symbol (e.g., ADA)."
+              },
+              "shortName": {
+                "type": "string",
+                "description": "The full name of the asset (e.g., Cardano)."
+              },
+              "amount": {
+                "type": "number",
+                "description": "The quantity of the asset owned by the user."
+              },
+              "value": {
+                "type": "number",
+                "description": "The total value of the asset holding in USD."
+              }
+            },
+            "required": ["icon", "name", "shortName", "amount", "value"]
+          }
         }
       },
       "required": [
         "displayName",
-        "email"
+        "email",
+        "balance",
+        "assets"
       ]
     }
   },
@@ -36,7 +72,7 @@
       "schema": {
         "$ref": "#/entities/UserProfile"
       },
-      "description": "Stores public profile information for each user."
+      "description": "Stores public profile and wallet information for each user."
     }
   }
 }

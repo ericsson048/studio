@@ -154,7 +154,7 @@ export default function LoginPage() {
               <Button
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={handleConnect}
-                disabled={isConnecting}
+                disabled={isConnecting || !auth}
               >
                 {isConnecting ? 'Connecting...' : t('connectButton')}
               </Button>

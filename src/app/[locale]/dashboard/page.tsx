@@ -18,7 +18,7 @@ import { useUser, useFirestore, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useDoc } from '@/firebase/firestore/use-doc';
 import { signOut } from 'firebase/auth';
-import { useRouter } from '@/navigation';
+import { useRouter } from '/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect } from 'react';
 
@@ -180,9 +180,43 @@ export default function DashboardPage() {
       router.replace('/login');
     }
   }, [user, loading, router]);
-  
+
   if (loading || !user) {
-    return null;
+    return (
+       <div className="flex justify-center items-start md:items-center min-h-screen bg-black py-8 px-4 md:py-0 md:px-0">
+        <div className="w-full max-w-4xl mx-auto bg-card rounded-3xl shadow-2xl shadow-primary/10 text-white font-sans overflow-hidden">
+          <div className="p-6 md:p-8">
+            <header className="flex justify-between items-center mb-6">
+              <Skeleton className="h-10 w-10" />
+              <div className="flex items-center gap-2">
+                <Skeleton className="h-10 w-10" />
+                <Skeleton className="h-8 w-8 rounded-full" />
+              </div>
+            </header>
+            <main>
+              <div className="text-left mb-8">
+                <Skeleton className="h-4 w-24" />
+                <Skeleton className="h-10 w-64 mt-1" />
+              </div>
+              <div className="flex flex-col md:flex-row justify-start gap-4 mb-8">
+                <Skeleton className="h-12 flex-1" />
+                <Skeleton className="h-12 flex-1" />
+                <Skeleton className="h-12 w-12" />
+              </div>
+              <div className="grid md:grid-cols-2 gap-8">
+                <Skeleton className="h-48" />
+                <div className="mt-8 md:mt-0">
+                  <Skeleton className="h-8 w-32 mb-2" />
+                  <Skeleton className="h-16 w-full my-2" />
+                  <Skeleton className="h-16 w-full my-2" />
+                  <Skeleton className="h-16 w-full my-2" />
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    );
   }
   
   return (

@@ -18,9 +18,9 @@ import { useUser, useFirestore, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useDoc } from '@/firebase/firestore/use-doc';
 import { signOut } from 'firebase/auth';
-import { useRouter } from '@/navigation';
+import { useRouter } from '../../../../navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const chartData = [
   { name: 'Jan', value: 20 }, { name: 'Fev', value: 45 }, { name: 'Mar', value: 30 },

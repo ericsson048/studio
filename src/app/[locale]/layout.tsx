@@ -2,7 +2,8 @@ import type {Metadata} from 'next';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import {NextIntlClientProvider, useMessages} from 'next-intl';
+import {NextIntlClientProvider} from 'next-intl';
+import {getMessages} from 'next-intl/server';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -13,14 +14,14 @@ export const metadata: Metadata = {
   description: 'Privacy-Preserving Recurring Payments',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
   params: {locale}
 }: Readonly<{
   children: React.ReactNode;
   params: {locale: string};
 }>) {
-  const messages = useMessages();
+  const messages = await getMessages();
 
   return (
     <html lang={locale} className="dark">

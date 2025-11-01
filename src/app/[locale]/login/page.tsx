@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from '@/navigation';
+import { useRouter } from '../../../../navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Wallet } from 'lucide-react';
@@ -11,8 +11,7 @@ import { signInAnonymously } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
-import { Link } from '@/navigation';
-import { Skeleton } from '@/components/ui/skeleton';
+import { Link } from '../../../../navigation';
 
 const defaultUserData = {
   balance: 40278.00,
@@ -83,9 +82,7 @@ export default function LoginPage() {
     }
   };
 
-  const isLoading = userLoading || user;
-
-  if (isLoading) {
+  if (userLoading || user) {
      return null;
   }
 

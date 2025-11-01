@@ -1,6 +1,8 @@
+
 'use client';
 
 import {useEffect, useState} from 'react';
+import { firebaseConfig } from './config';
 
 import {FirebaseProvider, type FirebaseProviderProps} from './provider';
 
@@ -13,16 +15,27 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
   const [firebase, setFirebase] = useState<FirebaseProviderProps | null>(null);
 
   useEffect(() => {
-    // Dynamically import initializeFirebase to ensure it's only run on the client.
-    import('.').then(({initializeFirebase}) => {
-      setFirebase(initializeFirebase());
-    });
+    // Check if all necessary Firebase config keys are present
+    const isFirebaseConfigured = 
+      firebaseConfig.apiKey &&
+      firebaseConfig.authDomain &&
+      firebaseConfig.projectId;
+
+    if (isFirebaseConfigured) {
+      // Dynamically import initializeFirebase to ensure it's only run on the client.
+      import('.').then(({initializeFirebase}) => {
+        setFirebase(initializeFirebase());
+      });
+    } else {
+      console.warn("Firebase configuration is missing. Firebase will not be initialized.");
+    }
   }, []);
 
   if (!firebase) {
-    // You can show a loading skeleton here if you want.
-    // We return null to keep it simple.
-    return null;
+    // If Firebase isn't configured or is still initializing,
+    // we can render the children without the provider.
+    // Components that depend on Firebase might not work, but the app won't crash.
+    return <>{children}</>;
   }
 
   return <FirebaseProvider {...firebase}>{children}</FirebaseProvider>;

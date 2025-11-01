@@ -36,6 +36,16 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  modularizeImports: {
+    'next-intl': {
+      transform: 'next-intl/dist/transform-server-component',
+      preventFullImport: true,
+    },
+  },
+  experimental: {
+    // This is required for the modularizeImports option to work
+    serverComponentsExternalPackages: ['next-intl'],
+  }
 };
 
 export default nextConfig;

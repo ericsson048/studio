@@ -1,0 +1,31 @@
+diff --git a/node_modules/next-intl/package.json b/node_modules/next-intl/package.json
+index 36a9254..5e7a934 100644
+--- a/node_modules/next-intl/package.json
++++ b/node_modules/next-intl/package.json
+@@ -48,6 +48,9 @@
+     "./server": {
+       "types": "./dist/server.d.ts",
+       "import": "./dist/server.js"
++    },
++    "./middleware": {
++      "types": "./dist/middleware.d.ts",
++      "import": "./dist/middleware.js"
+     }
+   },
+   "files": [
+diff --git a/node_modules/next-intl/dist/middleware.d.ts b/node_modules/next-intl/dist/middleware.d.ts
+new file mode 100644
+index 0000000..c576dfa
+--- /dev/null
++++ b/node_modules/next-intl/dist/middleware.d.ts
+@@ -0,0 +1,2 @@
++import middleware from './index.js';
++export default middleware;
+diff --git a/node_modules/next-intl/dist/middleware.js b/node_modules/next-intl/dist/middleware.js
+new file mode 100644
+index 0000000..94e5083
+--- /dev/null
++++ b/node_modules/next-intl/dist/middleware.js
+@@ -0,0 +1,2 @@
++import middleware from './index.js';
++export default middleware.create;

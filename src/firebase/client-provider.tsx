@@ -15,9 +15,10 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
   const [firebase, setFirebase] = useState<FirebaseProviderProps | null>(null);
 
   useEffect(() => {
-    // Check if all necessary Firebase config keys are present
+    // Check if all necessary Firebase config keys are present and not placeholders
     const isFirebaseConfigured = 
       firebaseConfig.apiKey &&
+      !firebaseConfig.apiKey.startsWith('YOUR_') &&
       firebaseConfig.authDomain &&
       firebaseConfig.projectId;
 
@@ -27,7 +28,7 @@ export function FirebaseClientProvider({children}: React.PropsWithChildren) {
         setFirebase(initializeFirebase());
       });
     } else {
-      console.warn("Firebase configuration is missing. Firebase will not be initialized.");
+      console.warn("Firebase configuration is missing or contains placeholder values. Please update your .env file with your project's credentials. Firebase will not be initialized.");
     }
   }, []);
 

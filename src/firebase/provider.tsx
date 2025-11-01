@@ -1,3 +1,4 @@
+
 'use client';
 
 import {createContext, useContext, type ReactNode} from 'react';
@@ -29,14 +30,10 @@ export function FirebaseProvider({
   auth,
   children,
 }: FirebaseProviderProps) {
+  const value = firebaseApp ? { firebaseApp, firestore, auth } : null;
+
   return (
-    <FirebaseContext.Provider
-      value={{
-        firebaseApp,
-        firestore,
-        auth,
-      }}
-    >
+    <FirebaseContext.Provider value={value}>
       {children}
     </FirebaseContext.Provider>
   );
@@ -67,19 +64,20 @@ export function useFirebase() {
  * A hook that returns the Firebase App instance.
  */
 export function useFirebaseApp() {
-  return useFirebase().firebaseApp;
+  return useFirebase()?.firebaseApp;
 }
 
 /**
  * A hook that returns the Firebase Firestore instance.
  */
 export function useFirestore() {
-  return useFirebase().firestore;
+  return useFirebase()?.firestore;
 }
 
 /**
  * A hook that returns the Firebase Auth instance.
  */
 export function useAuth() {
-  return useFirebase().auth;
+  return useFirebase()?.auth;
 }
+

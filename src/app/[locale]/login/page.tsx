@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Link, useRouter } from '@/navigation';
@@ -11,6 +12,7 @@ import { signInAnonymously } from 'firebase/auth';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useState } from 'react';
 import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from '@/components/ui/skeleton';
 
 const defaultUserData = {
   balance: 40278.00,
@@ -32,9 +34,18 @@ export default function LoginPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
-  const { user } = useUser();
+  const { user, loading: userLoading } = useUser();
 
   const handleConnect = async () => {
+    if (!auth || !firestore) {
+        toast({
+            title: "Firebase Not Initialized",
+            description: "Please check your Firebase configuration.",
+            variant: "destructive",
+        });
+        return;
+    }
+
     setLoading(true);
     try {
       const userCredential = await signInAnonymously(auth);
@@ -65,6 +76,26 @@ export default function LoginPage() {
       setLoading(false);
     }
   };
+
+  if (userLoading || !auth) {
+    return (
+        <div className="flex flex-col min-h-screen bg-background">
+            <header className="px-4 lg:px-6 h-14 flex items-center border-b border-border">
+                <Skeleton className="h-6 w-32" />
+                <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
+                    <Skeleton className="h-6 w-16" />
+                    <Skeleton className="h-8 w-24" />
+                </nav>
+            </header>
+            <main className="flex-1 flex items-center justify-center p-4">
+                <Skeleton className="w-full max-w-sm h-72" />
+            </main>
+            <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t border-border">
+                <Skeleton className="h-4 w-64" />
+            </footer>
+        </div>
+    )
+  }
 
   if (user) {
     router.replace('/dashboard');

@@ -1,3 +1,4 @@
+
 'use client';
 
 import {useEffect, useState} from 'react';
@@ -18,6 +19,13 @@ export function useUser() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth) {
+      // Firebase might not be initialized yet, or config is missing.
+      // We are not in a logged-in state.
+      setLoading(false);
+      return;
+    }
+
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setUser(user);
       setLoading(false);

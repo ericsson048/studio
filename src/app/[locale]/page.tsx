@@ -1,53 +1,57 @@
 import { ShieldCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Link } from '@/navigation';
+import { useTranslations } from 'next-intl';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 export default function Home() {
+  const t = useTranslations('Home');
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-14 flex items-center border-b">
         <Link className="flex items-center justify-center" href="/">
           <ShieldCheck className="h-6 w-6 text-primary" />
-          <span className="ml-2 text-lg font-semibold">ArcSubscription</span>
+          <span className="ml-2 text-lg font-semibold">{t('appName')}</span>
         </Link>
         <nav className="ml-auto flex items-center gap-4 sm:gap-6">
           <Link
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             href="#"
           >
-            Features
+            {t('features')}
           </Link>
           <Link
             className="text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
             href="#"
           >
-            Support
+            {t('support')}
           </Link>
           <Link href="/login">
             <Button variant="outline">
-              Connect Wallet
+              {t('connectWallet')}
             </Button>
           </Link>
+          <LanguageSwitcher />
         </nav>
       </header>
       <main className="flex-1 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-6 max-w-3xl">
           <h1 className="text-4xl font-bold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl">
-            Privacy-Preserving Recurring Payments
+            {t('title')}
           </h1>
           <p className="max-w-[700px] mx-auto text-muted-foreground md:text-xl">
-            Subscribe to services with USDC on the Arc blockchain. Your privacy, secured by Zero-Knowledge Proofs and AI.
+            {t('subtitle')}
           </p>
           <Link href="/login">
             <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90">
-              Get Started
+              {t('getStarted')}
             </Button>
           </Link>
         </div>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
         <p className="text-xs text-muted-foreground">
-          © {new Date().getFullYear()} ArcSubscription. All rights reserved.
+          {t('footer', { year: new Date().getFullYear() })}
         </p>
       </footer>
     </div>

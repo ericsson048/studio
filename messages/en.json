@@ -1,0 +1,34 @@
+{
+  "Home": {
+    "appName": "ArcSubscription",
+    "features": "Features",
+    "support": "Support",
+    "connectWallet": "Connect Wallet",
+    "title": "Privacy-Preserving Recurring Payments",
+    "subtitle": "Subscribe to services with USDC on the Arc blockchain. Your privacy, secured by Zero-Knowledge Proofs and AI.",
+    "getStarted": "Get Started",
+    "footer": "© {year} ArcSubscription. All rights reserved."
+  },
+  "Login": {
+    "header": "Crypto Wallet",
+    "signUp": "Sign Up",
+    "title": "Connect Your Wallet",
+    "description": "Use your wallet to connect securely.",
+    "connectButton": "Connect Wallet",
+    "terms": "By connecting, you agree to our Terms and Privacy Policy.",
+    "footer": "© {year} Crypto Wallet. All rights reserved."
+  },
+  "Dashboard": {
+    "yourWallet": "Your wallet",
+    "withdraw": "Withdraw",
+    "deposit": "Deposit",
+    "stakingAndTokens": "Staking & tokens",
+    "seeAll": "See all",
+    "tokens": "Tokens",
+    "staking": "Staking",
+    "assets": "Assets",
+    "buy": "Buy",
+    "plus12Tokens": "+ 12 tokens",
+    "locale": "en-US"
+  }
+}

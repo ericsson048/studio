@@ -1,0 +1,34 @@
+{
+  "Home": {
+    "appName": "ArcAbonnement",
+    "features": "Fonctionnalités",
+    "support": "Support",
+    "connectWallet": "Connecter le portefeuille",
+    "title": "Paiements récurrents préservant la confidentialité",
+    "subtitle": "Abonnez-vous à des services avec USDC sur la blockchain Arc. Votre vie privée, sécurisée par des preuves à connaissance nulle et l'IA.",
+    "getStarted": "Commencer",
+    "footer": "© {year} ArcAbonnement. Tous droits réservés."
+  },
+  "Login": {
+    "header": "Portefeuille Crypto",
+    "signUp": "S'inscrire",
+    "title": "Connectez votre Wallet",
+    "description": "Utilisez votre wallet pour vous connecter de manière sécurisée.",
+    "connectButton": "Connecter le Wallet",
+    "terms": "En vous connectant, vous acceptez nos Termes et notre Politique de Confidentialité.",
+    "footer": "© {year} Portefeuille Crypto. Tous droits réservés."
+  },
+  "Dashboard": {
+    "yourWallet": "Votre portefeuille",
+    "withdraw": "Retirer",
+    "deposit": "Déposer",
+    "stakingAndTokens": "Jalonnement & jetons",
+    "seeAll": "Voir tout",
+    "tokens": "Jetons",
+    "staking": "Jalonnement",
+    "assets": "Actifs",
+    "buy": "Acheter",
+    "plus12Tokens": "+ 12 jetons",
+    "locale": "fr-FR"
+  }
+}

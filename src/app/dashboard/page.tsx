@@ -48,7 +48,7 @@ export default function DashboardPage() {
               <Button variant="ghost" size="icon" className="relative">
                 <QrCode />
               </Button>
-              <Image src="https://i.pravatar.cc/150?u=a042581f4e29026704d" alt="User" width={32} height={32} className="rounded-full" />
+              <Image src="https://picsum.photos/seed/user-avatar/32/32" alt="User" width={32} height={32} className="rounded-full" data-ai-hint="person" />
             </div>
           </header>
 

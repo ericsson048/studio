@@ -111,9 +111,9 @@ export default function LoginPage() {
               <Button
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={handleConnect}
-                disabled={loading}
+                disabled={loading || !auth}
               >
-                {loading ? 'Connecting...' : t('connectButton')}
+                {loading || !auth ? 'Connecting...' : t('connectButton')}
               </Button>
               <p className="text-center text-xs text-muted-foreground">
                 {t('terms')}

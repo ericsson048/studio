@@ -1,14 +1,31 @@
 // src/app/[locale]/layout.tsx
+import { Inter, Space_Grotesk } from 'next/font/google';
 import { Toaster } from "@/components/ui/toaster";
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { notFound } from 'next/navigation';
 import { locales } from '../../navigation';
+import '../globals.css';
+
+
+const inter = Inter({ 
+  subsets: ['latin'], 
+  variable: '--font-inter',
+  display: 'swap',
+  fallback: ['system-ui', 'arial']
+});
+
+const spaceGrotesk = Space_Grotesk({ 
+  subsets: ['latin'], 
+  variable: '--font-space-grotesk',
+  display: 'swap',
+  fallback: ['system-ui', 'arial']
+});
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>; // Changed to Promise
+  params: Promise<{ locale: string }>;
 };
 
 export default async function LocaleLayout({
@@ -27,12 +44,7 @@ export default async function LocaleLayout({
 
   return (
     <html lang={locale} className="dark">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
-      <body className="font-sans antialiased">
+      <body className={`${inter.variable} ${spaceGrotesk.variable} font-sans antialiased`}>
         <FirebaseClientProvider>
           <NextIntlClientProvider locale={locale} messages={messages}>
             {children}

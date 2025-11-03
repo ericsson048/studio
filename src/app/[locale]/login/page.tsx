@@ -86,6 +86,9 @@ export default function LoginPage() {
      return null;
   }
 
+  console.log('====================================');
+  console.log(auth);
+  console.log('====================================');
 
   return (
     <div className="flex flex-col min-h-screen bg-background">

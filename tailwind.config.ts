@@ -10,8 +10,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['var(--font-inter)'],
-        mono: ['var(--font-space-grotesk)'],
+        sans: ['Inter', 'sans-serif'],
+        mono: ['Space Grotesk', 'monospace'],
       },
       colors: {
         background: 'hsl(var(--background))',

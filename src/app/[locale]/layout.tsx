@@ -1,26 +1,29 @@
-import type {Metadata} from 'next';
+// src/app/[locale]/layout.tsx
 import { Inter, Space_Grotesk } from 'next/font/google';
-import '../globals.css';
 import { Toaster } from "@/components/ui/toaster";
-import {NextIntlClientProvider} from 'next-intl';
-import {getMessages} from 'next-intl/server';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages } from 'next-intl/server';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
+import { notFound } from 'next/navigation';
+import { locales } from '../../../navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' });
 
-export const metadata: Metadata = {
-  title: 'ArcSubscription',
-  description: 'Privacy-Preserving Recurring Payments',
+type Props = {
+  children: React.ReactNode;
+  params: { locale: string };
 };
 
-export default async function RootLayout({
+export default async function LocaleLayout({
   children,
-  params: {locale}
-}: Readonly<{
-  children: React.ReactNode;
-  params: {locale: string};
-}>) {
+  params: { locale }
+}: Props) {
+  // Validate that the incoming locale is valid
+  if (!locales.includes(locale as any)) {
+    notFound();
+  }
+
   const messages = await getMessages();
 
   return (

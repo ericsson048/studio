@@ -5,22 +5,25 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { notFound } from 'next/navigation';
-import { locales } from '../../../navigation';
+import { locales } from '../../navigation';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({ subsets: ['latin'], variable: '--font-space-grotesk' });
 
 type Props = {
   children: React.ReactNode;
-  params: { locale: string };
+  params: Promise<{ locale: string }>; // Changed to Promise
 };
 
 export default async function LocaleLayout({
   children,
-  params: { locale }
+  params
 }: Props) {
+  // Await params before using
+  const { locale } = await params;
+  
   // Validate that the incoming locale is valid
-  console.log('jjjjj nn',locales.includes(locale as any))
+  console.log('jjjjj nn', locales.includes(locale as any));
   if (!locales.includes(locale as any)) {
     notFound();
   }

@@ -18,7 +18,7 @@ import { useUser, useFirestore, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useDoc } from '@/firebase/firestore/use-doc';
 import { signOut } from 'firebase/auth';
-import { useRouter } from '../../../../navigation';
+import { useRouter } from '../../../navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 

@@ -1,12 +1,8 @@
+// middleware.ts
 import createMiddleware from 'next-intl/middleware';
-import { locales, localePrefix } from './navigation';
+import { routing } from './navigation';
 
-export default createMiddleware({
-  // A default locale is required
-  defaultLocale: 'en',
-  locales,
-  localePrefix,
-});
+export default createMiddleware(routing);
 
 export const config = {
   // Match only internationalized pathnames
@@ -19,7 +15,6 @@ export const config = {
     '/(fr|en)/:path*',
 
     // Enable redirects that add a locale prefix
-    // (e.g. `/pathnames` -> `/en/pathnames`)
     '/((?!_next|_vercel|.*\\..*).*)'
   ]
 };

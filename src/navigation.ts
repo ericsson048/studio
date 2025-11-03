@@ -1,7 +1,9 @@
+// navigation.ts
 import {
   createLocalizedPathnamesNavigation,
   Pathnames
 } from 'next-intl/navigation';
+import { defineRouting } from 'next-intl/routing';
  
 export const locales = ['en', 'fr'] as const;
 export const localePrefix = 'always'; // Default
@@ -13,8 +15,16 @@ export const pathnames = {
   '/login': '/login',
   '/dashboard': '/dashboard'
 } satisfies Pathnames<typeof locales>;
+
+// Export routing configuration for middleware
+export const routing = defineRouting({
+  locales,
+  defaultLocale: 'en',
+  localePrefix,
+  pathnames
+});
  
-export const {Link, redirect, usePathname, useRouter} =
+export const { Link, redirect, usePathname, useRouter } =
   createLocalizedPathnamesNavigation({
     locales,
     localePrefix,

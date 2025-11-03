@@ -12,6 +12,8 @@ import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useToast } from "@/hooks/use-toast";
 import { Link } from '../../../navigation';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { injected } from 'wagmi/connectors';
 
 const defaultUserData = {
   balance: 40278.00,
@@ -31,15 +33,17 @@ export default function LoginPage() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
-  const [isConnecting, setIsConnecting] = useState(false);
   const { toast } = useToast();
+  
+  const { address, isConnected } = useAccount();
+  const { connect, isPending: isConnecting } = useConnect();
   const { user, loading: userLoading } = useUser();
 
   useEffect(() => {
-    if (!userLoading && user) {
+    if (isConnected && user) {
       router.replace('/dashboard');
     }
-  }, [user, userLoading, router]);
+  }, [isConnected, user, router]);
 
   const handleConnect = async () => {
     if (!auth || !firestore) {
@@ -50,45 +54,52 @@ export default function LoginPage() {
         });
         return;
     }
-
-    setIsConnecting(true);
-    try {
-      const userCredential = await signInAnonymously(auth);
-      const user = userCredential.user;
-
-      const userDocRef = doc(firestore, 'users', user.uid);
-      const userDoc = await getDoc(userDocRef);
-
-      if (!userDoc.exists()) {
-        // This is a new user, let's create their profile with default data
-        await setDoc(userDocRef, {
-            ...defaultUserData,
-            displayName: user.displayName || 'Anonymous User',
-            email: user.email || `anon_${user.uid}@example.com`,
-            photoURL: user.photoURL || `https://picsum.photos/seed/${user.uid}/150/150`
+    
+    connect({ connector: injected() }, {
+      onSuccess: async (data) => {
+        try {
+          const userCredential = await signInAnonymously(auth);
+          const user = userCredential.user;
+    
+          const userDocRef = doc(firestore, 'users', user.uid);
+          const userDoc = await getDoc(userDocRef);
+    
+          if (!userDoc.exists()) {
+            await setDoc(userDocRef, {
+                ...defaultUserData,
+                displayName: user.displayName || 'Anonymous User',
+                email: user.email || `anon_${user.uid}@example.com`,
+                photoURL: user.photoURL || `https://picsum.photos/seed/${user.uid}/150/150`,
+                walletAddress: data.accounts[0]
+            });
+          } else {
+            await setDoc(userDocRef, { walletAddress: data.accounts[0] }, { merge: true });
+          }
+    
+          router.push('/dashboard');
+        } catch (error: any) {
+          console.error("Firebase sign-in or data setup failed:", error);
+          toast({
+            title: "Connection Failed",
+            description: error.message,
+            variant: "destructive",
+          });
+        }
+      },
+      onError: (error) => {
+        console.error("Wallet connection failed:", error);
+        toast({
+          title: "Wallet Connection Failed",
+          description: error.message,
+          variant: "destructive",
         });
       }
-
-      router.push('/dashboard');
-    } catch (error: any) {
-      console.error("Anonymous sign-in failed:", error);
-      toast({
-        title: "Connection Failed",
-        description: error.message,
-        variant: "destructive",
-      });
-    } finally {
-      setIsConnecting(false);
-    }
+    });
   };
 
-  if (userLoading || user) {
+  if (userLoading || (isConnected && user)) {
      return null;
   }
-
-  console.log('====================================');
-  console.log(auth);
-  console.log('====================================');
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
@@ -115,7 +126,7 @@ export default function LoginPage() {
               <Button
                 className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
                 onClick={handleConnect}
-                disabled={isConnecting || !auth}
+                disabled={isConnecting}
               >
                 {isConnecting ? 'Connecting...' : t('connectButton')}
               </Button>

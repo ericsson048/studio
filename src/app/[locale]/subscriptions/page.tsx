@@ -5,23 +5,60 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { useUser } from '@/firebase';
 import { useRouter, Link } from '@/navigation';
 import { useTranslations } from 'next-intl';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { subscriptions } from '@/lib/subscriptions';
 import { ArrowLeft } from 'lucide-react';
+import { useAccount, useSendTransaction } from 'wagmi';
+import { parseEther } from 'viem';
+import { useToast } from "@/hooks/use-toast";
+import { ARC_CONFIG } from '@/lib/arc-config';
 
 export default function SubscriptionsPage() {
   const t = useTranslations('Subscriptions');
   const { user, loading } = useUser();
   const router = useRouter();
+  const { isConnected } = useAccount();
+  const { toast } = useToast();
+  const { sendTransaction, isPending } = useSendTransaction();
+  const [subscribingId, setSubscribingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && (!user || !isConnected)) {
       router.replace('/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, isConnected, router]);
+  
+  const handleSubscribe = (subId: string, price: number) => {
+    setSubscribingId(subId);
+    sendTransaction({
+      to: '0x0000000000000000000000000000000000000000', // Replace with merchant address
+      value: parseEther(price.toString()), // This is a placeholder for USDC amount
+    }, {
+      onSuccess: (hash) => {
+        toast({
+          title: "Transaction Submitted",
+          description: `Transaction hash: ${hash}`,
+          action: (
+            <a href={`https://testnet.arcalabs.network/tx/${hash}`} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline">View on Explorer</Button>
+            </a>
+          ),
+        });
+        setSubscribingId(null);
+      },
+      onError: (error) => {
+        toast({
+          title: "Transaction Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+        setSubscribingId(null);
+      }
+    });
+  };
 
-  if (loading || !user) {
+  if (loading || !user || !isConnected) {
     return null; // Or a loading spinner
   }
 
@@ -52,7 +89,13 @@ export default function SubscriptionsPage() {
                 <p className="text-3xl font-bold">${sub.price}<span className="text-sm font-normal text-muted-foreground">/{sub.frequency === 'monthly' ? 'month' : 'year'}</span></p>
               </CardContent>
               <CardFooter>
-                <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">{t('subscribeButton')}</Button>
+                <Button 
+                  className="w-full bg-accent text-accent-foreground hover:bg-accent/90"
+                  onClick={() => handleSubscribe(sub.id, sub.price)}
+                  disabled={isPending && subscribingId === sub.id}
+                >
+                  {isPending && subscribingId === sub.id ? 'Subscribing...' : t('subscribeButton')}
+                </Button>
               </CardFooter>
             </Card>
           ))}

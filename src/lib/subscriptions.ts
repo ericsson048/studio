@@ -13,7 +13,7 @@ export const subscriptions: Subscription[] = [
     id: 'netflix',
     name: 'Netflix',
     description: 'Premium Plan - Automated USDC Payments',
-    price: 19.99,
+    price: 0.0001,
     icon: 'https://picsum.photos/seed/netflix-logo/64/64',
     frequency: 'monthly',
     chainId: '421613' // Arc testnet
@@ -22,7 +22,7 @@ export const subscriptions: Subscription[] = [
     id: 'spotify',
     name: 'Spotify',
     description: 'Individual Plan - Automated USDC Payments',
-    price: 10.99,
+    price: 0.00005,
     icon: 'https://picsum.photos/seed/spotify-logo/64/64',
     frequency: 'monthly',
     chainId: '421613' // Arc testnet
@@ -31,7 +31,7 @@ export const subscriptions: Subscription[] = [
     id: 'youtube_premium',
     name: 'YouTube Premium',
     description: 'Family Plan - Automated USDC Payments',
-    price: 22.99,
+    price: 0.00012,
     icon: 'https://picsum.photos/seed/youtube-logo/64/64',
     frequency: 'monthly',
     chainId: '421613' // Arc testnet

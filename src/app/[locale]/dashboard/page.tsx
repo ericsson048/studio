@@ -22,6 +22,7 @@ import { signOut } from 'firebase/auth';
 import { useRouter, Link } from '@/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
+import { useAccount, useDisconnect } from 'wagmi';
 
 const chartData = [
   { name: 'Jan', value: 20 }, { name: 'Fev', value: 45 }, { name: 'Mar', value: 30 },
@@ -57,18 +58,17 @@ function DashboardContent() {
   const firestore = useFirestore();
   const auth = useAuth();
   const router = useRouter();
+  const { disconnect } = useDisconnect();
 
   const userDocRef = user ? doc(firestore, 'users', user.uid) : null;
   const { data: userProfile, loading: profileLoading } = useDoc(userDocRef);
 
   const handleSignOut = async () => {
-    if (!auth) return;
-    try {
+    if (auth) {
       await signOut(auth);
-      router.push('/login');
-    } catch (error) {
-      console.error("Error signing out: ", error);
     }
+    disconnect();
+    router.push('/login');
   };
   
   const loading = userLoading || profileLoading;
@@ -179,15 +179,16 @@ function DashboardContent() {
 
 export default function DashboardPage() {
   const { user, loading } = useUser();
+  const { isConnected } = useAccount();
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && !user) {
+    if (!loading && (!user || !isConnected)) {
       router.replace('/login');
     }
-  }, [user, loading, router]);
+  }, [user, loading, isConnected, router]);
 
-  if (loading || !user) {
+  if (loading || !user || !isConnected) {
     return null;
   }
   

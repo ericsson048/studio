@@ -6,6 +6,7 @@ import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { notFound } from 'next/navigation';
 import { locales } from '../../../navigation';
 import '../globals.css';
+import { WagmiProvider } from "@/components/WagmiProvider";
 
 type Props = {
   children: React.ReactNode;
@@ -32,12 +33,14 @@ export default async function LocaleLayout({
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet" />
       </head>
       <body className={`font-sans antialiased`}>
-        <FirebaseClientProvider>
-          <NextIntlClientProvider locale={locale} messages={messages}>
-            {children}
-            <Toaster />
-          </NextIntlClientProvider>
-        </FirebaseClientProvider>
+        <WagmiProvider>
+          <FirebaseClientProvider>
+            <NextIntlClientProvider locale={locale} messages={messages}>
+              {children}
+              <Toaster />
+            </NextIntlClientProvider>
+          </FirebaseClientProvider>
+        </WagmiProvider>
       </body>
     </html>
   );

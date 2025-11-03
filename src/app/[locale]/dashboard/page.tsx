@@ -11,7 +11,8 @@ import {
   CircleDollarSign,
   Droplets,
   LogOut,
-  CreditCard
+  CreditCard,
+  Copy
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import {useTranslations} from 'next-intl';
@@ -22,7 +23,12 @@ import { signOut } from 'firebase/auth';
 import { useRouter, Link } from '@/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
-import { useAccount, useDisconnect } from 'wagmi';
+import { useAccount, useDisconnect, useSendTransaction } from 'wagmi';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { useToast } from '@/hooks/use-toast';
+import { parseEther } from 'viem';
 
 const chartData = [
   { name: 'Jan', value: 20 }, { name: 'Fev', value: 45 }, { name: 'Mar', value: 30 },
@@ -59,9 +65,15 @@ function DashboardContent() {
   const auth = useAuth();
   const router = useRouter();
   const { disconnect } = useDisconnect();
+  const { address } = useAccount();
+  const { toast } = useToast();
+  const { sendTransaction, isPending: isSendingTransaction } = useSendTransaction();
 
   const userDocRef = user ? doc(firestore, 'users', user.uid) : null;
   const { data: userProfile, loading: profileLoading } = useDoc(userDocRef);
+  
+  const [withdrawAddress, setWithdrawAddress] = useState('');
+  const [withdrawAmount, setWithdrawAmount] = useState('');
 
   const handleSignOut = async () => {
     if (auth) {
@@ -71,6 +83,44 @@ function DashboardContent() {
     router.push('/login');
   };
   
+  const handleWithdraw = () => {
+    if (!withdrawAddress || !withdrawAmount) {
+      toast({ title: "Validation Error", description: "Please fill in all fields.", variant: "destructive" });
+      return;
+    }
+    sendTransaction({
+      to: withdrawAddress as `0x${string}`,
+      value: parseEther(withdrawAmount),
+    }, {
+      onSuccess: (hash) => {
+        toast({
+          title: "Withdrawal Submitted",
+          description: `Transaction hash: ${hash}`,
+           action: (
+            <a href={`https://testnet.arcalabs.network/tx/${hash}`} target="_blank" rel="noopener noreferrer">
+              <Button variant="outline">View on Explorer</Button>
+            </a>
+          ),
+        });
+      },
+      onError: (error) => {
+        toast({
+          title: "Withdrawal Failed",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    });
+  };
+
+  const copyAddress = () => {
+    if (address) {
+      navigator.clipboard.writeText(address);
+      toast({ title: "Copied!", description: "Wallet address copied to clipboard." });
+    }
+  };
+
+
   const loading = userLoading || profileLoading;
   const walletData = userProfile?.data();
 
@@ -90,9 +140,37 @@ function DashboardContent() {
                 <CreditCard className="mr-2 h-4 w-4" /> {t('subscriptions')}
               </Button>
             </Link>
-            <Button variant="ghost" size="icon" className="relative">
-              <QrCode />
-            </Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="ghost" size="icon" className="relative">
+                  <QrCode />
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('deposit')}</DialogTitle>
+                  <DialogDescription>{t('depositDescription')}</DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col items-center gap-4">
+                  {address && (
+                     <Image 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${address}`} 
+                        alt="Deposit QR Code" 
+                        width={200} 
+                        height={200}
+                        data-ai-hint="qr code" 
+                      />
+                  )}
+                  <div className="text-center break-all text-xs text-muted-foreground bg-secondary p-2 rounded-md">
+                    {address}
+                  </div>
+                   <Button onClick={copyAddress} variant="outline" size="sm">
+                      <Copy className="mr-2 h-4 w-4" /> {t('copyAddress')}
+                    </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             {loading ? (
               <Skeleton className="h-8 w-8 rounded-full" />
             ) : (
@@ -114,8 +192,64 @@ function DashboardContent() {
           </div>
 
           <div className="flex flex-col md:flex-row justify-start gap-4 mb-8">
-            <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t('withdraw')}</Button>
-            <Button variant="secondary" className="flex-1">{t('deposit')}</Button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="flex-1 bg-primary text-primary-foreground hover:bg-primary/90">{t('withdraw')}</Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('withdraw')}</DialogTitle>
+                  <DialogDescription>{t('withdrawDescription')}</DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="address" className="text-right">
+                      {t('recipient')}
+                    </Label>
+                    <Input id="address" value={withdrawAddress} onChange={(e) => setWithdrawAddress(e.target.value)} className="col-span-3" placeholder="0x..." />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="amount" className="text-right">
+                      {t('amount')}
+                    </Label>
+                    <Input id="amount" value={withdrawAmount} onChange={(e) => setWithdrawAmount(e.target.value)} type="number" className="col-span-3" placeholder="0.00" />
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button onClick={handleWithdraw} disabled={isSendingTransaction}>{isSendingTransaction ? t('sending') : t('send')}</Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="secondary" className="flex-1">{t('deposit')}</Button>
+              </DialogTrigger>
+               <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>{t('deposit')}</DialogTitle>
+                  <DialogDescription>{t('depositDescription')}</DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-col items-center gap-4">
+                  {address && (
+                     <Image 
+                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${address}`} 
+                        alt="Deposit QR Code" 
+                        width={200} 
+                        height={200}
+                        data-ai-hint="qr code" 
+                      />
+                  )}
+                  <div className="text-center break-all text-xs text-muted-foreground bg-secondary p-2 rounded-md">
+                    {address}
+                  </div>
+                   <Button onClick={copyAddress} variant="outline" size="sm">
+                      <Copy className="mr-2 h-4 w-4" /> {t('copyAddress')}
+                    </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             <Button variant="secondary" size="icon"><ArrowRightLeft className="h-4 w-4" /></Button>
           </div>
           

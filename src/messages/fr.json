@@ -30,7 +30,14 @@
     "buy": "Acheter",
     "plus12Tokens": "+ 12 jetons",
     "locale": "fr-FR",
-    "subscriptions": "Abonnements"
+    "subscriptions": "Abonnements",
+    "depositDescription": "Scannez le code QR ou copiez l'adresse pour déposer des fonds dans votre portefeuille.",
+    "copyAddress": "Copier l'adresse",
+    "withdrawDescription": "Entrez l'adresse du destinataire et le montant à retirer.",
+    "recipient": "Destinataire",
+    "amount": "Montant",
+    "send": "Envoyer",
+    "sending": "Envoi en cours..."
   },
   "Subscriptions": {
     "title": "Abonnements disponibles",

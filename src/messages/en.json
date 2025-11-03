@@ -30,7 +30,14 @@
     "buy": "Buy",
     "plus12Tokens": "+ 12 tokens",
     "locale": "en-US",
-    "subscriptions": "Subscriptions"
+    "subscriptions": "Subscriptions",
+    "depositDescription": "Scan the QR code or copy the address to deposit funds into your wallet.",
+    "copyAddress": "Copy Address",
+    "withdrawDescription": "Enter the recipient's address and the amount to withdraw.",
+    "recipient": "Recipient",
+    "amount": "Amount",
+    "send": "Send",
+    "sending": "Sending..."
   },
   "Subscriptions": {
     "title": "Available Subscriptions",

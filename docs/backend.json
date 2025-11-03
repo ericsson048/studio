@@ -60,6 +60,45 @@
         "balance",
         "assets"
       ]
+    },
+    "Subscription": {
+      "title": "Subscription Plan",
+      "description": "Represents a subscription plan for a service.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "icon": { "type": "string" }
+      },
+      "required": ["id", "name", "price", "icon"]
+    },
+    "UserSubscription": {
+      "title": "User Subscription",
+      "description": "Represents a user's subscription to a service.",
+      "type": "object",
+      "properties": {
+        "subscriptionId": {
+          "type": "string",
+          "description": "The ID of the subscription plan."
+        },
+        "userId": {
+          "type": "string",
+          "description": "The ID of the user."
+        },
+        "startDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The date the subscription started."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "cancelled", "expired"],
+          "description": "The status of the subscription."
+        }
+      },
+      "required": ["subscriptionId", "userId", "startDate", "status"]
     }
   },
   "auth": {
@@ -73,6 +112,12 @@
         "$ref": "#/entities/UserProfile"
       },
       "description": "Stores public profile and wallet information for each user."
+    },
+    "/users/{userId}/subscriptions/{subscriptionId}": {
+      "schema": {
+        "$ref": "#/entities/UserSubscription"
+      },
+      "description": "Stores user's subscriptions."
     }
   }
 }

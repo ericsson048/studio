@@ -10,7 +10,8 @@ import {
   Bitcoin,
   CircleDollarSign,
   Droplets,
-  LogOut
+  LogOut,
+  CreditCard
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, ResponsiveContainer, Tooltip } from 'recharts';
 import {useTranslations} from 'next-intl';
@@ -18,7 +19,7 @@ import { useUser, useFirestore, useAuth } from '@/firebase';
 import { doc } from 'firebase/firestore';
 import { useDoc } from '@/firebase/firestore/use-doc';
 import { signOut } from 'firebase/auth';
-import { useRouter } from '../../../navigation';
+import { useRouter, Link } from '@/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useEffect, useState } from 'react';
 
@@ -84,6 +85,11 @@ function DashboardContent() {
         <header className="flex justify-between items-center mb-6">
           <Button variant="ghost" size="icon" onClick={handleSignOut}><LogOut /></Button>
           <div className="flex items-center gap-2">
+            <Link href="/subscriptions">
+              <Button variant="ghost">
+                <CreditCard className="mr-2 h-4 w-4" /> {t('subscriptions')}
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon" className="relative">
               <QrCode />
             </Button>

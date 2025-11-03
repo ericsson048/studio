@@ -29,6 +29,13 @@
     "assets": "Assets",
     "buy": "Buy",
     "plus12Tokens": "+ 12 tokens",
-    "locale": "en-US"
+    "locale": "en-US",
+    "subscriptions": "Subscriptions"
+  },
+  "Subscriptions": {
+    "title": "Available Subscriptions",
+    "subtitle": "Choose a service to subscribe to using your secure wallet. All payments are processed on-chain with USDC.",
+    "subscribeButton": "Subscribe",
+    "backToDashboard": "Back to Dashboard"
   }
 }

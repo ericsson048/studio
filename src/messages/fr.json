@@ -29,6 +29,13 @@
     "assets": "Actifs",
     "buy": "Acheter",
     "plus12Tokens": "+ 12 jetons",
-    "locale": "fr-FR"
+    "locale": "fr-FR",
+    "subscriptions": "Abonnements"
+  },
+  "Subscriptions": {
+    "title": "Abonnements disponibles",
+    "subtitle": "Choisissez un service auquel vous abonner à l'aide de votre portefeuille sécurisé. Tous les paiements sont traités sur la chaîne avec USDC.",
+    "subscribeButton": "S'abonner",
+    "backToDashboard": "Retour au tableau de bord"
   }
 }

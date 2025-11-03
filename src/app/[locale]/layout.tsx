@@ -20,6 +20,7 @@ export default async function LocaleLayout({
   params: { locale }
 }: Props) {
   // Validate that the incoming locale is valid
+  console.log('jjjjj nn',locales.includes(locale as any))
   if (!locales.includes(locale as any)) {
     notFound();
   }

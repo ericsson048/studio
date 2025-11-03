@@ -9,12 +9,9 @@ export const localePrefix = 'always'; // Default
 // The `pathnames` object holds pairs of internal
 // and external paths, separated by locale.
 export const pathnames = {
-  // If all locales use the same pathnames, a single
-  // external path can be used for all locales.
   '/': '/',
   '/login': '/login',
-  '/dashboard': '/dashboard',
- 
+  '/dashboard': '/dashboard'
 } satisfies Pathnames<typeof locales>;
  
 export const {Link, redirect, usePathname, useRouter} =

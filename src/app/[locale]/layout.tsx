@@ -4,7 +4,7 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { notFound } from 'next/navigation';
-import { locales } from '../../../navigation';
+import { locales } from '../../navigation';
 
 type Props = {
   children: React.ReactNode;

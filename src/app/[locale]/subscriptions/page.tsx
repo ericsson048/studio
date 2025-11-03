@@ -49,7 +49,7 @@ export default function SubscriptionsPage() {
                 </div>
               </CardHeader>
               <CardContent className="flex-1">
-                <p className="text-3xl font-bold">${sub.price}<span className="text-sm font-normal text-muted-foreground">/month</span></p>
+                <p className="text-3xl font-bold">${sub.price}<span className="text-sm font-normal text-muted-foreground">/{sub.frequency === 'monthly' ? 'month' : 'year'}</span></p>
               </CardContent>
               <CardFooter>
                 <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">{t('subscribeButton')}</Button>

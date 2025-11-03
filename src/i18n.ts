@@ -1,15 +1,16 @@
 // i18n.ts
 import { getRequestConfig } from 'next-intl/server';
+import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
  
-// Can be imported from a shared config
 const locales = ['en', 'fr'];
  
 export default getRequestConfig(async ({ requestLocale }) => {
-  // Get and await the locale
+  // Await headers to fix the sync API warning
+  await headers();
+  
   let locale = await requestLocale;
   
-  // Validate that the incoming `locale` parameter is valid
   if (!locale || !locales.includes(locale as any)) {
     notFound();
   }

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Privacy-Preserving Recurring Payments',
 };
 
+
+
 export default function RootLayout({
   children,
 }: {
